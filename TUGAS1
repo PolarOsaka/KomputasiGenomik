@@ -1,0 +1,100 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
+using namespace std;
+
+int main() {
+    // Pemetaan kodon RNA ke asam amino
+    unordered_map<string, string> codonMapping = {
+        {"UAA", "STOP"}, {"UAG", "STOP"}, {"UGA", "STOP"},
+        {"UUU", "Phe"}, {"UUC", "Phe"},
+        {"UUA", "Leu"}, {"UUG", "Leu"},
+        {"CUU", "Leu"}, {"CUC", "Leu"}, {"CUA", "Leu"}, {"CUG", "Leu"},
+        {"AUU", "Ile"}, {"AUC", "Ile"}, {"AUA", "Ile"}, {"AUG", "Met"},
+        {"GUU", "Val"}, {"GUC", "Val"}, {"GUA", "Val"}, {"GUG", "Val"},
+        {"UCU", "Ser"}, {"UCC", "Ser"}, {"UCA", "Ser"}, {"UCG", "Ser"},
+        {"AGU", "Ser"}, {"AGC", "Ser"},
+        {"CCU", "Pro"}, {"CCC", "Pro"}, {"CCA", "Pro"}, {"CCG", "Pro"},
+        {"ACU", "Thr"}, {"ACC", "Thr"}, {"ACA", "Thr"}, {"ACG", "Thr"},
+        {"GCU", "Ala"}, {"GCC", "Ala"}, {"GCA", "Ala"}, {"GCG", "Ala"},
+        {"UAU", "Tyr"}, {"UAC", "Tyr"},
+        {"UGU", "Cys"}, {"UGC", "Cys"},
+        {"UGG", "Trp"},
+        {"CAA", "Gln"}, {"CAG", "Gln"},
+        {"AAG", "Lys"}, {"AAA", "Lys"},
+        {"GAU", "Asp"}, {"GAC", "Asp"},
+        {"Glu", "Glu"}, {"GAA", "Glu"}, {"GAG", "Glu"},
+        {"AGG", "Arg"}, {"AGA", "Arg"},
+        {"CGU", "Arg"}, {"CGC", "Arg"}, {"CGA", "Arg"}, {"CGG", "Arg"},
+        {"GGU", "Gly"}, {"GGC", "Gly"}, {"GGA", "Gly"}, {"GGG", "Gly"}
+    };
+
+    string DNA;
+    cout << "Masukkan runtutan DNA (tanpa spasi): ";
+    cin >> DNA;
+
+    // Memastikan panjang DNA adalah kelipatan 3
+    if (DNA.length() % 3 != 0) {
+        cout << "Panjang runtutan DNA harus kelipatan 3!" << endl;
+        return 1;
+    }
+
+    // Transkripsi DNA ke RNA
+    string RNA(DNA.length(), ' '); // Inisialisasi RNA dengan panjang yang sama dengan DNA
+    for (size_t j = 0; j < DNA.length(); ++j) {
+        switch (DNA[j]) {
+            case 'A':
+                RNA[j] = 'U';
+                break;
+            case 'T':
+                RNA[j] = 'A';
+                break;
+            case 'C':
+                RNA[j] = 'G';
+                break;
+            case 'G':
+                RNA[j] = 'C';
+                break;
+            default:
+                cout << "Karakter tidak valid dalam DNA!" << endl;
+                return 1;
+        }
+    }
+
+    cout << "Runtut RNA yang terbentuk adalah: " << RNA << endl;
+
+    string Aminos;
+    string codonSequence;
+
+    // Memproses setiap triple kodon
+    for (size_t i = 0; i < RNA.length(); i += 3) {
+        string codon = RNA.substr(i, 3);
+        codonSequence += codon + " ";
+
+        // Cari kodon di dalam peta
+        if (codonMapping.find(codon) != codonMapping.end()) {
+            string Amino = codonMapping[codon];
+            if (Amino == "STOP") {
+                break;  // Stop translation at STOP codon
+            }
+            Aminos += Amino + " ";
+        } else {
+            Aminos += "Unknown ";
+        }
+    }
+
+    // Menghapus spasi terakhir dari kedua string
+    if (!codonSequence.empty()) {
+        codonSequence.pop_back();
+    }
+    if (!Aminos.empty()) {
+        Aminos.pop_back();
+    }
+
+    // Menampilkan hasil
+    cout << "Runtut triple kodon adalah: " << codonSequence << endl;
+    cout << "Runtut Asam amino adalah: " << Aminos << endl;
+
+    return 0;
+}
