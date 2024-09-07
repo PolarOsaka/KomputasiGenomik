@@ -24,7 +24,7 @@ int main() {
         {"CAA", "Gln"}, {"CAG", "Gln"},
         {"AAG", "Lys"}, {"AAA", "Lys"},
         {"GAU", "Asp"}, {"GAC", "Asp"},
-        {"Glu", "Glu"}, {"GAA", "Glu"}, {"GAG", "Glu"},
+        {"GAA", "Glu"}, {"GAG", "Glu"},
         {"AGG", "Arg"}, {"AGA", "Arg"},
         {"CGU", "Arg"}, {"CGC", "Arg"}, {"CGA", "Arg"}, {"CGG", "Arg"},
         {"GGU", "Gly"}, {"GGC", "Gly"}, {"GGA", "Gly"}, {"GGG", "Gly"}
