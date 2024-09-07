@@ -1,0 +1,78 @@
+# Pemetaan kodon RNA ke asam amino
+codon_mapping = {
+    "UAA": "STOP", "UAG": "STOP", "UGA": "STOP",
+    "UUU": "Phe", "UUC": "Phe",
+    "UUA": "Leu", "UUG": "Leu",
+    "CUU": "Leu", "CUC": "Leu", "CUA": "Leu", "CUG": "Leu",
+    "AUU": "Ile", "AUC": "Ile", "AUA": "Ile", "AUG": "Met",
+    "GUU": "Val", "GUC": "Val", "GUA": "Val", "GUG": "Val",
+    "UCU": "Ser", "UCC": "Ser", "UCA": "Ser", "UCG": "Ser",
+    "AGU": "Ser", "AGC": "Ser",
+    "CCU": "Pro", "CCC": "Pro", "CCA": "Pro", "CCG": "Pro",
+    "ACU": "Thr", "ACC": "Thr", "ACA": "Thr", "ACG": "Thr",
+    "GCU": "Ala", "GCC": "Ala", "GCA": "Ala", "GCG": "Ala",
+    "UAU": "Tyr", "UAC": "Tyr",
+    "UGU": "Cys", "UGC": "Cys",
+    "UGG": "Trp", "AAC": "Asp",
+    "CAA": "Gln", "CAG": "Gln", "CAU": "His", "CAC": "His",
+    "AAG": "Lys", "AAA": "Lys",
+    "GAU": "Asp", "GAC": "Asp",
+    "GAA": "Glu", "GAG": "Glu",
+    "AGA": "Arg", "AGG": "Arg",
+    "CGU": "Arg", "CGC": "Arg", "CGA": "Arg", "CGG": "Arg",
+    "GGU": "Gly", "GGC": "Gly", "GGA": "Gly", "GGG": "Gly"
+}
+
+# Fungsi untuk transkripsi DNA ke RNA
+def transcribe_dna_to_rna(dna):
+    rna = dna.replace("A", "U").replace("T", "A").replace("C", "G").replace("G", "C")
+    return rna
+
+# Fungsi untuk membaca runtutan DNA dari file
+def read_dna_from_file(filename):
+    try:
+        with open(filename, 'r') as file:
+            dna_sequence = file.read().strip()
+        return dna_sequence
+    except FileNotFoundError:
+        print(f"Gagal membuka file: {filename}")
+        return None
+
+# Fungsi untuk menerjemahkan RNA menjadi asam amino
+def translate_rna_to_amino_acids(rna):
+    amino_acids = []
+    codon_sequence = []
+    
+    for i in range(0, len(rna), 3):
+        codon = rna[i:i+3]
+        codon_sequence.append(codon)
+        amino_acid = codon_mapping.get(codon, "Unknown")
+        if amino_acid == "STOP":
+            break
+        amino_acids.append(amino_acid)
+    
+    return " ".join(codon_sequence), " ".join(amino_acids)
+
+# Fungsi utama
+def main():
+    filename = input("HPVDNAseq.txt")
+    dna = read_dna_from_file(filename)
+    
+    if dna is None:
+        return
+    
+    if len(dna) % 3 != 0:
+        print("Panjang runtutan DNA harus kelipatan 3!")
+        return
+    
+    rna = transcribe_dna_to_rna(dna)
+    print(f"Runtut RNA yang terbentuk adalah: {rna}")
+    
+    codon_sequence, amino_acids = translate_rna_to_amino_acids(rna)
+    print(f"Runtut triple kodon adalah: {codon_sequence}")
+    print(f"Runtut Asam amino adalah: {amino_acids}")
+
+# Menjalankan program
+if __name__ == "__main__":
+    main()
+
