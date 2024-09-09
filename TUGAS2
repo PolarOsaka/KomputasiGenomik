@@ -55,7 +55,7 @@ def translate_rna_to_amino_acids(rna):
 
 # Fungsi utama
 def main():
-    filename = input("HPVDNAseq.txt")
+    filename = input("SARSCov2seq.txt")
     dna = read_dna_from_file(filename)
     
     if dna is None:
